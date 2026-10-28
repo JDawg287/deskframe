@@ -1,0 +1,57 @@
+[package]
+name = "deskframe"
+version = "0.1.0"
+edition = "2021"
+description = "Folder frames on the Windows desktop"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/JDawg287/deskframe"
+publish = false
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[dependencies.windows]
+version = "0.62"
+features = [
+    # From the build plan
+    "Win32_Foundation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Shell",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_Dwm",
+    "Win32_Graphics_Direct2D",
+    "Win32_Graphics_Direct2D_Common",
+    "Win32_Graphics_DirectWrite",
+    "Win32_Graphics_Dxgi_Common",
+    "Win32_Graphics_Imaging",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Com",
+    "Win32_System_Registry",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Threading",
+    "Win32_System_IO",
+    # Needed by the APIs the plan uses, same crate
+    "Win32_Security",                  # CreateMutexW signature
+    "Win32_UI_Accessibility",          # SetWinEventHook (foreground changes)
+    "Win32_UI_Controls",               # WM_MOUSELEAVE, IImageList (shell icons)
+    "Win32_System_Diagnostics_Debug",  # OutputDebugStringW
+    "Win32_System_SystemInformation",  # GetLocalTime for log lines
+    "Win32_System_DataExchange",       # clipboard (Copy path)
+    "Win32_System_Memory",             # GlobalAlloc for clipboard data
+    "Win32_System_Ole",                # drag and drop (OleInitialize, IDropTarget)
+    "Win32_System_SystemServices",     # drop key state (MODIFIERKEYS_FLAGS)
+    "Win32_System_Com_StructuredStorage", # STGMEDIUM for telling a drag source the result
+]
+
+[build-dependencies]
+embed-resource = "3.0"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

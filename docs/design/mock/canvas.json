@@ -1,0 +1,22 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-26T19:05:00Z" },
+  "title": "DeskFrame Frame Mock",
+  "launch": { "view": "canvas" },
+  "pages": [
+    { "id": "original", "name": "Original" },
+    { "id": "glass", "name": "Glass + blur" }
+  ],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 800, "h": 400, "title": "Dark mode", "is_interactive": true, "page": "original" },
+    "Light.dc.html": { "x": 880, "y": 0, "w": 800, "h": 400, "title": "Light mode", "is_interactive": true, "page": "original" },
+    "Glass.dc.html": { "x": 0, "y": 0, "w": 800, "h": 400, "title": "Glass, dark", "is_interactive": true, "page": "glass" },
+    "GlassLight.dc.html": { "x": 880, "y": 0, "w": 800, "h": 400, "title": "Glass, light", "is_interactive": true, "page": "glass" }
+  },
+  "order": ["Main.dc.html", "Light.dc.html", "Glass.dc.html", "GlassLight.dc.html"],
+  "notes": {
+    "heading": { "x": 0, "y": -260, "text": "DeskFrame frame: dark and light", "kind": "title1", "maxW": 1680, "page": "original" },
+    "glassHeading": { "x": 0, "y": -260, "text": "Option 2: glass card with blur", "kind": "title1", "maxW": 1680, "page": "glass" }
+  },
+  "designSystems": []
+}

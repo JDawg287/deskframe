@@ -1,0 +1,11 @@
+/target
+deskframe.log
+config.json
+config.json.bad
+config.json.tmp
+.claude/settings.local.json
+/.superpowers
+/docs/dependencies.json
+/docs/notes
+/docs/superpowers
+/docs/*.md

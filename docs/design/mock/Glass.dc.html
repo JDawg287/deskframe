@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DeskFrame glass frame, dark mode</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+.gc-cell{appearance:none;cursor:default;transition:background .12s}
+.gc-cell:focus-visible,.gc-btn:focus-visible{outline:2px solid #4CC2FF;outline-offset:-2px}
+.gc-btn{transition:background .12s,opacity .15s}
+.gc-btn:hover{background:rgba(128,128,128,0.24)}
+.gc-hide{opacity:0;transition:opacity .15s}
+.gc:hover .gc-hide,.gc:focus-within .gc-hide{opacity:1}
+.gc-scroll{scrollbar-width:thin}
+</style>
+</helmet>
+<div style="width: 800px; height: 400px; position: relative; overflow: hidden; background: {{sky}}; font-family: 'Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif">
+<svg aria-hidden="true" width="800" height="400" viewBox="0 0 800 400" style="position: absolute; left: 0; top: 0">
+<circle cx="610" cy="96" r="54" fill="{{sun}}"></circle>
+<circle cx="120" cy="60" r="2" fill="{{star}}"></circle>
+<circle cx="270" cy="34" r="1.5" fill="{{star}}"></circle>
+<circle cx="390" cy="80" r="2" fill="{{star}}"></circle>
+<circle cx="720" cy="40" r="1.5" fill="{{star}}"></circle>
+<path d="M0 250 L90 190 L170 228 L260 150 L350 214 L430 170 L520 232 L620 160 L700 206 L800 176 V400 H0 Z" fill="{{ridgeBack}}"></path>
+<path d="M0 312 L110 262 L200 300 L300 244 L410 306 L500 272 L600 318 L700 268 L800 300 V400 H0 Z" fill="{{ridgeFront}}"></path>
+<path d="M0 360 L140 336 L280 362 L420 340 L560 366 L700 344 L800 358 V400 H0 Z" fill="{{ridgeNear}}"></path>
+</svg>
+<sc-for list="{{frames}}" as="f" hint-placeholder-count="2">
+<section class="gc" aria-label="{{f.title}} frame" style="position: absolute; left: {{f.left}}px; top: 48px; width: 320px; height: {{f.height}}px; box-sizing: border-box; border-radius: {{f.radius}}px; border: 1px solid {{border}}; background: {{glass}}; backdrop-filter: {{blur}}; -webkit-backdrop-filter: {{blur}}; box-shadow: {{shadow}}; overflow: hidden; display: flex; flex-direction: column">
+<div style="height: 42px; flex-shrink: 0; display: flex; align-items: center; gap: 2px; padding: 0 5px 0 16px">
+<h2 style="margin: 0; min-width: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: {{fg}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{f.title}}</h2>
+<span style="flex: 1; margin-left: 8px; font-size: 12px; line-height: 16px; color: {{fgDim}}; white-space: nowrap">{{f.count}}</span>
+<sc-if value="{{locked}}" hint-placeholder-val="{{false}}">
+<span class="{{ctlClass}}" role="img" aria-label="Locked" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: {{fgDim}}">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="7" width="9" height="6.5" rx="1.2"></rect><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"></path></svg>
+</span>
+</sc-if>
+<button class="gc-btn {{ctlClass}}" type="button" aria-label="{{f.chevLabel}}" aria-expanded="{{f.ariaExpanded}}" onClick="{{f.toggle}}" style="width: 32px; height: 32px; padding: 0; border: 0; border-radius: 16px; background: transparent; color: {{fg}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<sc-if value="{{f.expanded}}" hint-placeholder-val="{{true}}">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"></path></svg>
+</sc-if>
+<sc-if value="{{f.collapsed}}" hint-placeholder-val="{{false}}">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4l4 4-4 4"></path></svg>
+</sc-if>
+</button>
+</div>
+<sc-if value="{{f.expanded}}" hint-placeholder-val="{{true}}">
+<div class="gc-scroll" style="flex: 1; min-height: 0; overflow-y: auto; padding: 2px 8px 8px; display: grid; grid-template-columns: repeat(4, 76px); grid-auto-rows: 84px; align-content: start; scrollbar-color: {{thumb}} transparent">
+<sc-for list="{{f.items}}" as="it" hint-placeholder-count="8">
+<button class="gc-cell" type="button" aria-pressed="{{it.pressed}}" onClick="{{it.select}}" onMouseEnter="{{it.enter}}" onMouseLeave="{{it.leave}}" style="width: 76px; height: 84px; box-sizing: border-box; margin: 0; padding: 3px 2px 0; border-radius: 10px; border: 0; background: {{it.bg}}; box-shadow: {{it.ring}}; display: flex; flex-direction: column; align-items: center; gap: 2px; font: inherit">
+<sc-if value="{{it.k.folder}}" hint-placeholder-val="{{false}}">
+<svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><path d="M4 12a3 3 0 0 1 3-3h11l4 4h19a3 3 0 0 1 3 3v3H4z" fill="#D9A43B"></path><path d="M4 18h40v19a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="#F4C452"></path></svg>
+</sc-if>
+<sc-if value="{{it.k.page}}" hint-placeholder-val="{{false}}">
+<svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 4h18l10 10v28a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="#FFFFFF" stroke="#BDBDBD"></path><path d="M29 4v8a2 2 0 0 0 2 2h8" fill="#ECECEC" stroke="#BDBDBD"></path><rect x="5" y="26" width="24" height="12" rx="2" fill="{{it.band}}"></rect><path d="M9 32h16" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></path></svg>
+</sc-if>
+<sc-if value="{{it.k.image}}" hint-placeholder-val="{{false}}">
+<svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><path d="M11 4h18l10 10v28a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="#FFFFFF" stroke="#BDBDBD"></path><path d="M29 4v8a2 2 0 0 0 2 2h8" fill="#ECECEC" stroke="#BDBDBD"></path><rect x="13" y="20" width="22" height="18" rx="2" fill="#6CB4EE"></rect><path d="M13 34l7-8 5 5 3-3 7 7v1a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2z" fill="#3E8E41"></path><circle cx="29" cy="25" r="2.5" fill="#FFF3B0"></circle></svg>
+</sc-if>
+<sc-if value="{{it.k.app}}" hint-placeholder-val="{{false}}">
+<svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="6" width="34" height="34" rx="8" fill="#5B5FC7"></rect><path d="M18 17h14v14H18z" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round"></path><rect x="4" y="30" width="14" height="14" rx="2" fill="#FFFFFF" stroke="#9E9E9E"></rect><path d="M8 40l6-6m-4 0h4v4" fill="none" stroke="#0067C0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</sc-if>
+<span style="width: 100%; font-size: 12px; line-height: 15px; color: {{fgLabel}}; text-align: center; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-word">{{it.name}}</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+</section>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"accent":{"editor":"color","options":["#0078D4","#E3008C","#107C10","#CA5010"],"default":"#0078D4"},"blur":{"editor":"range","min":0,"max":48,"step":2,"unit":"px","default":24},"tintOpacity":{"editor":"range","min":20,"max":80,"step":1,"unit":"%","default":45},"shadow":{"editor":"boolean","default":true},"hoverControls":{"editor":"boolean","default":true},"locked":{"editor":"boolean","default":false},"$preview":{"width":800,"height":400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      collapsed: { a: false, b: true },
+      selected: { a: 2, b: null },
+      hover: { a: 5, b: null }
+    };
+  }
+
+  frameData() {
+    const page = (band) => ({ k: { page: true }, band: band });
+    return [
+      {
+        id: 'a', title: 'Projects', left: 48,
+        items: [
+          { name: 'Design', k: { folder: true } },
+          { name: 'Invoices', k: { folder: true } },
+          Object.assign({ name: 'Budget 2026.xlsx' }, page('#107C41')),
+          Object.assign({ name: 'Notes.txt' }, page('#7A7A7A')),
+          { name: 'Screenshot 2026-10-21 184512.png', k: { image: true } },
+          Object.assign({ name: 'Quarterly report final v3 (approved).pdf' }, page('#C4314B')),
+          { name: 'Game Launcher', k: { app: true } },
+          Object.assign({ name: 'Recipes.docx' }, page('#185ABD')),
+          Object.assign({ name: 'Archive.zip' }, page('#8A6D3B')),
+          { name: 'Photos', k: { folder: true } }
+        ]
+      },
+      {
+        id: 'b', title: 'Downloads', left: 416,
+        items: [
+          { name: 'Installer', k: { app: true } },
+          { name: 'Wallpaper.jpg', k: { image: true } },
+          Object.assign({ name: 'Manual.pdf' }, page('#C4314B')),
+          { name: 'Drivers', k: { folder: true } }
+        ]
+      }
+    ];
+  }
+
+  setIn(key, id, value) {
+    const next = Object.assign({}, this.state[key]);
+    next[id] = value;
+    const patch = {};
+    patch[key] = next;
+    this.setState(patch);
+  }
+
+  renderVals() {
+    const dark = (this.props.theme ?? 'dark') === 'dark';
+    const accent = this.props.accent ?? '#0078D4';
+    const a = (this.props.tintOpacity ?? 45) / 100;
+    const blurPx = this.props.blur ?? 24;
+    const shadowOn = this.props.shadow ?? true;
+    const hex = accent.replace('#', '');
+    const r = parseInt(hex.slice(0, 2), 16), g = parseInt(hex.slice(2, 4), 16), b = parseInt(hex.slice(4, 6), 16);
+    const selFill = 'rgba(' + r + ',' + g + ',' + b + ',0.24)';
+    const selRing = 'inset 0 0 0 1px rgba(' + r + ',' + g + ',' + b + ',0.75)';
+    const hoverFill = dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.5)';
+    const top = Math.min(a + 0.08, 1);
+
+    const frames = this.frameData().map((f) => {
+      const collapsed = !!this.state.collapsed[f.id];
+      const rows = Math.ceil(f.items.length / 4);
+      // Expanded: header 42 + content (2 px top, 8 px bottom padding), capped at 2.5 rows so the long frame scrolls.
+      const content = Math.min(2 + rows * 84 + 8, 2 + 84 * 2.5);
+      const items = f.items.map((it, i) => {
+        const sel = this.state.selected[f.id] === i;
+        const hov = this.state.hover[f.id] === i;
+        return Object.assign({}, it, {
+          band: it.band || '#7A7A7A',
+          pressed: sel ? 'true' : 'false',
+          bg: sel ? selFill : (hov ? hoverFill : 'transparent'),
+          ring: sel ? selRing : 'none',
+          select: () => this.setIn('selected', f.id, i),
+          enter: () => this.setIn('hover', f.id, i),
+          leave: () => { if (this.state.hover[f.id] === i) this.setIn('hover', f.id, null); }
+        });
+      });
+      return {
+        title: f.title,
+        count: f.items.length + ' items',
+        left: f.left,
+        height: collapsed ? 44 : 2 + 42 + content,
+        // Collapsed frames become a pill.
+        radius: collapsed ? 22 : 16,
+        collapsed: collapsed,
+        expanded: !collapsed,
+        ariaExpanded: collapsed ? 'false' : 'true',
+        chevLabel: (collapsed ? 'Expand ' : 'Collapse ') + f.title,
+        toggle: () => this.setIn('collapsed', f.id, !collapsed),
+        items: items
+      };
+    });
+
+    const highlight = dark ? 'inset 0 1px 0 rgba(255,255,255,0.16)' : 'inset 0 1px 0 rgba(255,255,255,0.95)';
+    const drop = dark
+      ? '0 18px 44px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.25), '
+      : '0 18px 44px rgba(20,40,80,0.20), 0 2px 8px rgba(20,40,80,0.10), ';
+
+    return {
+      frames: frames,
+      locked: this.props.locked ?? false,
+      ctlClass: (this.props.hoverControls ?? true) ? 'gc-hide' : '',
+      sky: dark ? 'linear-gradient(180deg, #081230 0%, #1A2C60 70%, #2C3F7A 100%)' : 'linear-gradient(180deg, #BFD9F4 0%, #E7E4F0 60%, #F6D9C4 100%)',
+      sun: dark ? '#EFD9A0' : '#FFB65C',
+      star: dark ? '#DDE6FF' : 'rgba(255,255,255,0)',
+      ridgeBack: dark ? '#2A3D78' : '#8EAED6',
+      ridgeFront: dark ? '#17244D' : '#5B7FB0',
+      ridgeNear: dark ? '#0B1330' : '#38557F',
+      glass: dark
+        ? 'linear-gradient(180deg, rgba(58,58,66,' + top + ') 0%, rgba(28,28,34,' + a + ') 100%)'
+        : 'linear-gradient(180deg, rgba(255,255,255,' + top + ') 0%, rgba(240,243,248,' + a + ') 100%)',
+      border: dark ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.7)',
+      blur: blurPx > 0 ? 'blur(' + blurPx + 'px) saturate(170%)' : 'none',
+      shadow: shadowOn ? drop + highlight : highlight,
+      fg: dark ? '#FFFFFF' : '#141414',
+      fgDim: dark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.62)',
+      fgLabel: dark ? 'rgba(255,255,255,0.94)' : 'rgba(0,0,0,0.88)',
+      thumb: dark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)'
+    };
+  }
+}
+</script>
+</body>
+</html>
